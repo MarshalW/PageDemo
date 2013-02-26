@@ -1,1 +1,20 @@
-This file was created by IntelliJ IDEA 12.0.3 for binding GitHub repository
+API使用指南
+
+简单使用
+
+作为用户，只需要接触和使用PageAnimationLayout这个类即可。
+一般情况下，你需要先有个layout布局文件，比如本例中的item.xml。
+在布局文件中，需要使用PageAnimationLayout，它其实是个定制的FrameLayout。
+在PageAnimationLayout中，放置你的目标视图，就是想做动画的视图。
+然后，你执行PageAnimationLayout的start方法即可。
+
+如果需要在动画结束后再做处理
+
+那么，你的目标视图，需要实现PageAnimationLayout.AnimationEndCallback中的回调方法，api会自动识别，并在动画结束后执行。
+
+使用限制
+
+目前，本示例只能在SDK 11 (3.0) 以上版本执行，因为动画的时间功能依赖该版本开始支持的Property Animation。
+以后可考虑用自定义方式实现timing功能，那么可以支持到SDK 8(2.2)
+
+

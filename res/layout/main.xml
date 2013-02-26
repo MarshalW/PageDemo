@@ -4,67 +4,10 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:background="#ffd2f1"
+              android:id="@+id/rootView"
         >
     <View android:layout_width="fill_parent"
           android:layout_height="100dp"
           android:background="#e3ff84"/>
-    <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="200dp"
-            >
-        <com.example.pagedemo.PageAnimationLayout
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="2dp"
-                android:id="@+id/targetViewGroup"
-                >
-            <!--<com.example.pagedemo.MyTextView-->
-                    <!--android:id="@+id/targetView"-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:layout_height="fill_parent"-->
-                    <!--android:background="#ffc70c"-->
-                    <!--android:text="请点击"-->
-                    <!--android:alpha="0"-->
-                    <!--/>-->
-            <!--<LinearLayout-->
-            <!--android:id="@+id/targetView"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="fill_parent"-->
-            <!-->-->
-            <Button
-                    android:id="@+id/targetView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="#ffc70c"
-            android:text="请点击"
-            android:alpha="0"
-            />
-            <!--</LinearLayout>-->
-
-        </com.example.pagedemo.PageAnimationLayout>
-
-    </RelativeLayout>
-    <!--<com.example.pagedemo.PageAnimationView-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="100dp"-->
-    <!--/>-->
-    <!--<com.example.pagedemo.PageAnimationView-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="100dp"-->
-    <!--/>-->
-    <!--<com.example.pagedemo.PageAnimationView-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="100dp"-->
-    <!--/>-->
-    <!--<com.example.pagedemo.PageAnimationView-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="100dp"-->
-    <!--/>-->
-    <!--<com.example.pagedemo.PageAnimationView-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="100dp"-->
-    <!--/>-->
 </LinearLayout>
 

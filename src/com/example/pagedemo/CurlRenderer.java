@@ -126,25 +126,11 @@ public class CurlRenderer implements GLSurfaceView.Renderer {
         float ratio = mViewportWidth / mViewportHeight;
 
         if (this.mesh != null) {
-
-
-//            if(positionFactor==3){
-//
-//                return;
-////                positionFactor=1;
-//            }
-
-//            if (positionFactor == 1) {
-
             Log.d("CurlMesh.Blink", "curl renderer on draw frame, position factor: " + positionFactor + ", ratio: " + ratio);
 
             mesh.setRect(this.mViewRect);
             mesh.reset();
-//            } else {
             mesh.curl(new PointF(positionFactor * ratio * 2, positionFactor), new PointF((float) (.9f + .1f * (positionFactor + 1) / 2), 1f), .8);
-//            mesh.curl(new PointF(1 * ratio * 2, 1), new PointF((float) (.9f + .1f * (1 + 1) / 2), 1f), .8);
-//            }
-
             mesh.onDrawFrame(mShaderTexture, mShaderShadow);
         }
     }

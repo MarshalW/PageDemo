@@ -28,11 +28,13 @@ public class PageAnimationView extends GLSurfaceView {
     //动画时长500ms
     private long duration = 1000;
     //延时2000ms执行
-    private long startDelay = 2000;
+    private long startDelay = 1000;
     //动画定时对象
     private ValueAnimator animator;
 
     private CurlRenderer renderer;
+
+    private PageAnimationLayout.AnimationEndCallback animationEndCallback;
 
     private Handler handler=new Handler(){
         @Override
@@ -42,6 +44,18 @@ public class PageAnimationView extends GLSurfaceView {
     };
 
     private Bitmap bitmap;
+
+    public void setAnimationEndCallback(PageAnimationLayout.AnimationEndCallback animationEndCallback) {
+        this.animationEndCallback = animationEndCallback;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public void setStartDelay(long startDelay) {
+        this.startDelay = startDelay;
+    }
 
     public PageAnimationView(Context context) {
         super(context);
@@ -65,17 +79,14 @@ public class PageAnimationView extends GLSurfaceView {
         this.renderer = new CurlRenderer();
         this.setRenderer(this.renderer);
         this.renderer.getMesh().setFlipTexture(false);
-//        this.renderer.getMesh().reset();
 
         this.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
         this.renderer.setMargins(.01f, .01f, .01f, .01f);
-//        this.renderer.setPositionFactor(-1);
 
         animator = ValueAnimator.ofFloat(1f,-1f);
         animator.setDuration(this.duration);
         animator.setStartDelay(startDelay);
-//        animator.setRepeatCount(5);
         animator.setInterpolator(new AccelerateInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -97,8 +108,11 @@ public class PageAnimationView extends GLSurfaceView {
                 if(viewGroup!=null){
                     View view=viewGroup.findViewById(R.id.targetView);
                     view.setAlpha(1);
-//                    PageAnimationView.this.setVisibility(View.INVISIBLE);
                     handler.sendMessageDelayed(new Message(),0);
+
+                    if (animationEndCallback!=null){
+                        animationEndCallback.callback();
+                    }
                 }
             }
 
