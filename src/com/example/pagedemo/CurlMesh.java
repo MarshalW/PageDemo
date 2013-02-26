@@ -89,7 +89,7 @@ public class CurlMesh {
      */
     public CurlMesh(int maxCurlSplits) {
         mTexturePage = new CurlPage();
-        mTexturePage.setColor(Color.argb(0, 255, 255, 255), CurlPage.SIDE_FRONT);
+        mTexturePage.setColor(Color.argb(255, 255, 255, 255), CurlPage.SIDE_FRONT);
         mTexturePage.setColor(Color.argb(127, 255, 255, 255),
                 CurlPage.SIDE_BACK);
 
@@ -175,7 +175,7 @@ public class CurlMesh {
         mBufTexCoords.put((float) vertex.mTexX);
         mBufTexCoords.put((float) vertex.mTexY);
 
-        Log.d("CurlMesh", "add vertex: " + vertex+", thread:"+Thread.currentThread());
+//        Log.d("CurlMesh", "add vertex: " + vertex+", thread:"+Thread.currentThread());
     }
 
     /**
@@ -187,7 +187,6 @@ public class CurlMesh {
      * @param radius  Radius of curl.
      */
     public synchronized void curl(PointF curlPos, PointF curlDir, double radius) {
-        Log.d("CurlMesh", "curl -->>" + curlPos+", thread:"+Thread.currentThread());
         mBufVertices.position(0);
         mBufColors.position(0);
         mBufTexCoords.position(0);
@@ -483,6 +482,8 @@ public class CurlMesh {
         }
         mBufShadowColors.position(0);
         mBufShadowVertices.position(0);
+
+//        Log.d("CurlMesh.Draw","curl vertices count front -->>"+mVerticesCountFront+",count back -->>"+mVerticesCountBack+", thread: "+Thread.currentThread());
     }
 
     /**
@@ -528,8 +529,19 @@ public class CurlMesh {
      */
     public synchronized void onDrawFrame(CurlShader shaderTexture,
                                          CurlShader shaderShadow) {
-        Log.d("CurlMesh", "===>>> on draw frame, thread:" + Thread.currentThread());
+
+//        Log.d("CurlMesh.Draw",">>>vertices count front -->>"+mVerticesCountFront+",count back -->>"+mVerticesCountBack);
+
+//        Log.d("CurlMesh.draw",">>>>>on draw frame");
         // First allocate texture if there is not one yet.
+
+        StringBuilder builder=new StringBuilder();
+        for(int i=0;i<mBufTexCoords.limit();i++){
+            builder.append(mBufTexCoords.get(i)).append(",");
+        }
+
+        Log.d("CurlMesh.DrawPix",">>>"+builder.toString());
+
         if (mTextureIds == null) {
             // Generate texture.
             mTextureIds = new int[2];
@@ -545,8 +557,36 @@ public class CurlMesh {
                         GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
                 GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
                         GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+//                Log.d("CurlMesh.texture", "bind texture");
             }
         }
+
+//        Log.d("CurlMesh.Draw",">>>vertices count front -->>"+mVerticesCountFront+",count back -->>"+mVerticesCountBack);
+
+        if (mTexturePage.getTexturesChanged()) {
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureIds[0]);
+            Bitmap texture = mTexturePage.getTexture(CurlPage.SIDE_FRONT);
+//            MyActivity.saveBitmap(texture, "test_b.png");
+            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, texture, 0);
+            texture.recycle();
+
+            mTextureBack = mTexturePage.hasBackTexture();
+            if (mTextureBack) {
+                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureIds[1]);
+                texture = mTexturePage.getTexture(CurlPage.SIDE_BACK);
+                GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, texture, 0);
+                texture.recycle();
+            }
+
+            mTexturePage.recycle();
+//            reset();
+
+//            Log.d("CurlMesh.texture", "****** set text image 2d, bmp: " + texture.getRowBytes());
+
+
+        }
+
+//        Log.d("CurlMesh.Draw",">>>vertices count front -->>"+mVerticesCountFront+",count back -->>"+mVerticesCountBack);
 
         // TODO: Drop shadow drawing is done temporarily here to hide some
         // problems with its calculation.
@@ -568,6 +608,8 @@ public class CurlMesh {
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, mDropShadowCount);
         GLES20.glDisable(GLES20.GL_BLEND);
 
+//        Log.d("CurlMesh.Draw",">>>vertices count front -->>"+mVerticesCountFront+",count back -->>"+mVerticesCountBack);
+
         // Instantiate main shader.
         shaderTexture.useProgram();
         aPosition = shaderTexture.getHandle("aPosition");
@@ -584,6 +626,8 @@ public class CurlMesh {
                 0, mBufTexCoords);
         GLES20.glEnableVertexAttribArray(aTextureCoord);
 
+//        Log.d("CurlMesh.Draw",">>>vertices count front -->>"+mVerticesCountFront+",count back -->>"+mVerticesCountBack);
+
         // Draw front facing texture.
         GLES20.glEnable(GLES20.GL_TEXTURE_2D);
         if (!mFlipTexture || !mTextureBack) {
@@ -592,6 +636,7 @@ public class CurlMesh {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureIds[1]);
         }
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, mVerticesCountFront);
+//        Log.d("CurlMesh.Draw","vertices count front -->>"+mVerticesCountFront+",count back -->>"+mVerticesCountBack+", thread: "+Thread.currentThread());
 
         // Render back facing texture.
         int backStartIdx = Math.max(0, mVerticesCountFront - 2);

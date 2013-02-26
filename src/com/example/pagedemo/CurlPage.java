@@ -18,147 +18,128 @@ package com.example.pagedemo;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 
 /**
  * Storage class for page textures, blend colors and possibly some other values
  * in the future.
- * 
+ *
  * @author harism
  */
 public class CurlPage {
 
-	public static final int SIDE_BACK = 2;
-	public static final int SIDE_BOTH = 3;
-	public static final int SIDE_FRONT = 1;
+    public static final int SIDE_BACK = 2;
+    public static final int SIDE_BOTH = 3;
+    public static final int SIDE_FRONT = 1;
 
-	private int mColorBack;
-	private int mColorFront;
-	private Bitmap mTextureBack;
-	private Bitmap mTextureFront;
-	private boolean mTexturesChanged;
+    private int mColorBack;
+    private int mColorFront;
+    private Bitmap mTextureBack;
+    private Bitmap mTextureFront;
+    private boolean mTexturesChanged;
 
-	/**
-	 * Default constructor.
-	 */
-	public CurlPage() {
-		reset();
-	}
+    /**
+     * Default constructor.
+     */
+    public CurlPage() {
+        reset();
+    }
 
-	/**
-	 * Getter for color.
-	 */
-	public int getColor(int side) {
-		switch (side) {
-		case SIDE_FRONT:
-			return mColorFront;
-		default:
-			return mColorBack;
-		}
-	}
+    /**
+     * Getter for color.
+     */
+    public int getColor(int side) {
+        switch (side) {
+            case SIDE_FRONT:
+                return mColorFront;
+            default:
+                return mColorBack;
+        }
+    }
 
-	/**
-	 * Getter for textures.
-	 * 
-	 */
-	public Bitmap getTexture(int side) {
-		switch (side) {
-		case SIDE_FRONT:
-			return mTextureFront;
-		default:
-			return mTextureBack;
-		}
-	}
+    /**
+     * Getter for textures.
+     */
+    public Bitmap getTexture(int side) {
+        switch (side) {
+            case SIDE_FRONT:
+                return mTextureFront;
+            default:
+                return mTextureBack;
+        }
+    }
 
-	/**
-	 * Returns true if textures have changed.
-	 */
-	public boolean getTexturesChanged() {
-		return mTexturesChanged;
-	}
+    /**
+     * Returns true if textures have changed.
+     */
+    public boolean getTexturesChanged() {
+        return mTexturesChanged;
+    }
 
-	/**
-	 * Returns true if back siding texture exists and it differs from front
-	 * facing one.
-	 */
-	public boolean hasBackTexture() {
-		return !mTextureFront.equals(mTextureBack);
-	}
+    /**
+     * Returns true if back siding texture exists and it differs from front
+     * facing one.
+     */
+    public boolean hasBackTexture() {
+        return !mTextureFront.equals(mTextureBack);
+    }
 
-	/**
-	 * Recycles and frees underlying Bitmaps.
-	 */
-	public void recycle() {
-		if (mTextureFront != null) {
-			mTextureFront.recycle();
-		}
-		mTextureFront = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
-		mTextureFront.eraseColor(mColorFront);
-		if (mTextureBack != null) {
-			mTextureBack.recycle();
-		}
-		mTextureBack = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
-		mTextureBack.eraseColor(mColorBack);
-		mTexturesChanged = false;
-	}
+    /**
+     * Recycles and frees underlying Bitmaps.
+     */
+    public void recycle() {
+        if (mTextureFront != null) {
+            mTextureFront.recycle();
+        }
+        mTextureFront = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
+        mTextureFront.eraseColor(mColorFront);
+        if (mTextureBack != null) {
+            mTextureBack.recycle();
+        }
+        mTextureBack = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
+        mTextureBack.eraseColor(mColorBack);
+        mTexturesChanged = false;
+    }
 
-	/**
-	 * Resets this CurlPage into its initial state.
-	 */
-	public void reset() {
-		mColorBack = Color.WHITE;
-		mColorFront = Color.WHITE;
-		recycle();
-	}
+    /**
+     * Resets this CurlPage into its initial state.
+     */
+    public void reset() {
+        mColorBack = Color.WHITE;
+        mColorFront = Color.WHITE;
+        recycle();
+    }
 
-	/**
-	 * Setter blend color.
-	 */
-	public void setColor(int color, int side) {
-		switch (side) {
-		case SIDE_FRONT:
-			mColorFront = color;
-			break;
-		case SIDE_BACK:
-			mColorBack = color;
-			break;
-		default:
-			mColorFront = mColorBack = color;
-			break;
-		}
-	}
+    /**
+     * Setter blend color.
+     */
+    public void setColor(int color, int side) {
+        switch (side) {
+            case SIDE_FRONT:
+                mColorFront = color;
+                break;
+            case SIDE_BACK:
+                mColorBack = color;
+                break;
+            default:
+                mColorFront = mColorBack = color;
+                break;
+        }
+    }
 
-	/**
-	 * Setter for textures.
-	 */
-	public void setTexture(Bitmap texture, int side) {
-		if (texture == null) {
-			texture = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
-			if (side == SIDE_BACK) {
-				texture.eraseColor(mColorBack);
-			} else {
-				texture.eraseColor(mColorFront);
-			}
-		}
-		switch (side) {
-		case SIDE_FRONT:
-			if (mTextureFront != null)
-				mTextureFront.recycle();
-			mTextureFront = texture;
-			break;
-		case SIDE_BACK:
-			if (mTextureBack != null)
-				mTextureBack.recycle();
-			mTextureBack = texture;
-			break;
-		case SIDE_BOTH:
-			if (mTextureFront != null)
-				mTextureFront.recycle();
-			if (mTextureBack != null)
-				mTextureBack.recycle();
-			mTextureFront = mTextureBack = texture;
-			break;
-		}
-		mTexturesChanged = true;
-	}
+    /**
+     * Setter for textures.
+     */
+    public void setTexture(Bitmap texture) {
+        if (texture == null) {
+            texture = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
+        }
+        if (mTextureFront != null)
+            mTextureFront.recycle();
+        if (mTextureBack != null)
+            mTextureBack.recycle();
+        mTextureFront = mTextureBack = texture;
+        mTexturesChanged = true;
+    }
 
 }

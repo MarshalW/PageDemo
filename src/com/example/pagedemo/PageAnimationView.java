@@ -1,14 +1,21 @@
 package com.example.pagedemo;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import org.xml.sax.DTDHandler;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,6 +33,15 @@ public class PageAnimationView extends GLSurfaceView {
     private ValueAnimator animator;
 
     private CurlRenderer renderer;
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            PageAnimationView.this.setVisibility(View.INVISIBLE);
+        }
+    };
+
+    private Bitmap bitmap;
 
     public PageAnimationView(Context context) {
         super(context);
@@ -48,24 +64,62 @@ public class PageAnimationView extends GLSurfaceView {
 
         this.renderer = new CurlRenderer();
         this.setRenderer(this.renderer);
+        this.renderer.getMesh().setFlipTexture(false);
+//        this.renderer.getMesh().reset();
 
         this.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
-        this.renderer.setMargins(.5f, .4f, .05f, .2f);
+        this.renderer.setMargins(.01f, .01f, .01f, .01f);
+//        this.renderer.setPositionFactor(-1);
 
         animator = ValueAnimator.ofFloat(1f,-1f);
         animator.setDuration(this.duration);
         animator.setStartDelay(startDelay);
-        animator.setRepeatCount(10);
+//        animator.setRepeatCount(5);
         animator.setInterpolator(new AccelerateInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                Log.d("PageAnimation", "factor>>>>>" + valueAnimator.getAnimatedValue());
                 renderer.setPositionFactor((Float)valueAnimator.getAnimatedValue());
                 requestRender();
             }
         });
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                ViewGroup viewGroup=(ViewGroup)getParent();
+
+                if(viewGroup!=null){
+                    View view=viewGroup.findViewById(R.id.targetView);
+                    view.setAlpha(1);
+//                    PageAnimationView.this.setVisibility(View.INVISIBLE);
+                    handler.sendMessageDelayed(new Message(),0);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+        this.renderer.getMesh().getTexturePage().setTexture(bitmap);
+    }
+
+    public void start(){
         animator.start();
     }
 }

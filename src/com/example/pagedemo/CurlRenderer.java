@@ -45,6 +45,8 @@ public class CurlRenderer implements GLSurfaceView.Renderer {
 
     private CurlMesh mesh;
 
+    private boolean begin;
+
     private RectF mMargins = new RectF();
     // Page rectangles.
     // Projection matrix.
@@ -106,31 +108,42 @@ public class CurlRenderer implements GLSurfaceView.Renderer {
      * Basic constructor.
      */
     public CurlRenderer() {
-        this.mesh = new CurlMesh(20);
+        this.mesh = new CurlMesh(10);
     }
 
-    private float positionFactor;
+    private float positionFactor = 1;
 
     public void setPositionFactor(float positionFactor) {
         this.positionFactor = positionFactor;
+
     }
 
     @Override
     public synchronized void onDrawFrame(GL10 unused) {
-        GLES20.glClearColor(0f, 0f, 0f, 0f);
+//        GLES20.glClearColor(0f, 0f, 0f, 0f);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
         float ratio = mViewportWidth / mViewportHeight;
 
         if (this.mesh != null) {
-            Log.d("CurlMesh", "curl renderer on draw frame, thread:" + Thread.currentThread());
 
-            if (positionFactor == 0) {
-                mesh.setRect(this.mPageRect);
-                mesh.reset();
-            } else {
-                mesh.curl(new PointF(positionFactor * ratio*2, positionFactor), new PointF((float)(.9f+.1f*(positionFactor+1)/2), 1f), 0.2);
-            }
+
+//            if(positionFactor==3){
+//
+//                return;
+////                positionFactor=1;
+//            }
+
+//            if (positionFactor == 1) {
+
+            Log.d("CurlMesh.Blink", "curl renderer on draw frame, position factor: " + positionFactor + ", ratio: " + ratio);
+
+            mesh.setRect(this.mViewRect);
+            mesh.reset();
+//            } else {
+            mesh.curl(new PointF(positionFactor * ratio * 2, positionFactor), new PointF((float) (.9f + .1f * (positionFactor + 1) / 2), 1f), .8);
+//            mesh.curl(new PointF(1 * ratio * 2, 1), new PointF((float) (.9f + .1f * (1 + 1) / 2), 1f), .8);
+//            }
 
             mesh.onDrawFrame(mShaderTexture, mShaderShadow);
         }
