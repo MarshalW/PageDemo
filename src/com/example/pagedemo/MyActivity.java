@@ -40,30 +40,30 @@ public class MyActivity extends Activity {
         PageAnimationLayout pageAnimationLayout = (PageAnimationLayout) itemView.findViewById(R.id.targetViewGroup);//获取动画视图的布局对象
         views.add(pageAnimationLayout);
 
-        itemView = View.inflate(this, R.layout.item, null);//动画视图连带的布局
-        pageAnimationLayout = (PageAnimationLayout) itemView.findViewById(R.id.targetViewGroup);//获取动画视图的布局对象
-        rootView.addView(itemView);
-        views.add(pageAnimationLayout);
-
-        itemView = View.inflate(this, R.layout.item, null);//动画视图连带的布局
-        pageAnimationLayout = (PageAnimationLayout) itemView.findViewById(R.id.targetViewGroup);//获取动画视图的布局对象
-        rootView.addView(itemView);
-        views.add(pageAnimationLayout);
-
-        itemView = View.inflate(this, R.layout.item, null);//动画视图连带的布局
-        pageAnimationLayout = (PageAnimationLayout) itemView.findViewById(R.id.targetViewGroup);//获取动画视图的布局对象
-        rootView.addView(itemView);
-        views.add(pageAnimationLayout);
-
-        itemView = View.inflate(this, R.layout.item, null);//动画视图连带的布局
-        pageAnimationLayout = (PageAnimationLayout) itemView.findViewById(R.id.targetViewGroup);//获取动画视图的布局对象
-        rootView.addView(itemView);
-        views.add(pageAnimationLayout);
-
-        itemView = View.inflate(this, R.layout.item, null);//动画视图连带的布局
-        pageAnimationLayout = (PageAnimationLayout) itemView.findViewById(R.id.targetViewGroup);//获取动画视图的布局对象
-        rootView.addView(itemView);
-        views.add(pageAnimationLayout);
+//        itemView = View.inflate(this, R.layout.item, null);//动画视图连带的布局
+//        pageAnimationLayout = (PageAnimationLayout) itemView.findViewById(R.id.targetViewGroup);//获取动画视图的布局对象
+//        rootView.addView(itemView);
+//        views.add(pageAnimationLayout);
+//
+//        itemView = View.inflate(this, R.layout.item, null);//动画视图连带的布局
+//        pageAnimationLayout = (PageAnimationLayout) itemView.findViewById(R.id.targetViewGroup);//获取动画视图的布局对象
+//        rootView.addView(itemView);
+//        views.add(pageAnimationLayout);
+//
+//        itemView = View.inflate(this, R.layout.item, null);//动画视图连带的布局
+//        pageAnimationLayout = (PageAnimationLayout) itemView.findViewById(R.id.targetViewGroup);//获取动画视图的布局对象
+//        rootView.addView(itemView);
+//        views.add(pageAnimationLayout);
+//
+//        itemView = View.inflate(this, R.layout.item, null);//动画视图连带的布局
+//        pageAnimationLayout = (PageAnimationLayout) itemView.findViewById(R.id.targetViewGroup);//获取动画视图的布局对象
+//        rootView.addView(itemView);
+//        views.add(pageAnimationLayout);
+//
+//        itemView = View.inflate(this, R.layout.item, null);//动画视图连带的布局
+//        pageAnimationLayout = (PageAnimationLayout) itemView.findViewById(R.id.targetViewGroup);//获取动画视图的布局对象
+//        rootView.addView(itemView);
+//        views.add(pageAnimationLayout);
     }
 
     @Override
