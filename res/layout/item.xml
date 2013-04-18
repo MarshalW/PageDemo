@@ -2,7 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
-                android:layout_height="200dp">
+                android:layout_height="100dp">
     <!-- 动画的布局文件 -->
     <com.example.pagedemo.PageAnimationLayout
             android:layout_width="100dp"

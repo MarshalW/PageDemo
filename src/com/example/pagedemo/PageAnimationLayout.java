@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -24,27 +25,44 @@ public class PageAnimationLayout extends FrameLayout {
 
     public PageAnimationLayout(Context context) {
         super(context);
+        this.init();
     }
 
     public PageAnimationLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.init();
     }
 
     public PageAnimationLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.init();
     }
 
-    public void start(long startDelay,long duration) {
+    private void init(){
+    }
+
+    private Handler handler=new Handler();
+
+    public void start(final long startDelay,final long duration) {
+       handler.postDelayed(new Runnable() {
+           @Override
+           public void run() {
+               _start(startDelay-100,duration);
+           }
+       },100);
+    }
+
+    private void _start(long startDelay,long duration) {
         if(!started){
             View targetView = findViewById(R.id.targetView);
-            targetView.buildDrawingCache();
-            targetView.buildDrawingCache();
 
             PageAnimationView animationView = new PageAnimationView(this.getContext());
             animationView.setStartDelay(startDelay);
             animationView.setDuration(duration);
 
-            Bitmap bitmap=loadBitmapFromView(targetView);
+            targetView.setDrawingCacheEnabled(true);
+            Bitmap bitmap= Bitmap.createBitmap(targetView.getDrawingCache());
+            targetView.setDrawingCacheEnabled(false);
             animationView.setBitmap(bitmap);
             this.addView(animationView);
 
@@ -55,7 +73,6 @@ public class PageAnimationLayout extends FrameLayout {
             animationView.start();
             this.started=true;
         }
-
     }
 
     public static Bitmap loadBitmapFromView(View v) {
