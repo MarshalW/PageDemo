@@ -67,6 +67,10 @@ public class PageAnimationView extends GLSurfaceView {
         this.init();
     }
 
+    public void cancel(){
+        animator.cancel();
+    }
+
     private void init() {
         //使用OpenGL ES 2.0
         this.setEGLContextClientVersion(2);

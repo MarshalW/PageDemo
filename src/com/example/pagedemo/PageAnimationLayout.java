@@ -57,7 +57,7 @@ public class PageAnimationLayout extends FrameLayout {
         if (!started) {
             View targetView = findViewById(R.id.targetView);
 
-            PageAnimationView animationView = new PageAnimationView(this.getContext());
+            final PageAnimationView animationView = new PageAnimationView(this.getContext());
             animationView.setStartDelay(startDelay);
             animationView.setDuration(duration);
 
@@ -77,6 +77,13 @@ public class PageAnimationLayout extends FrameLayout {
 
             animationView.start();
             this.started = true;
+
+            getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    animationView.cancel();
+                }
+            }, 100);
         }
 
     }
